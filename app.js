@@ -29,10 +29,10 @@ app.use('/', index);
 app.use('/users', users);
 
 app.get('/fulfillment', function (req, res) {
-  voice.intent("Get Open Rooms", function(conv) {
-    conv.ask("its working ");
-  })
-  res.send("GOOD")
+  res.send(JSON.stringify({
+                        "speech" : "Error. Can you try it again ? ",
+                        "displayText" : "Error. Can you try it again ? "
+                    }));
 })
 
 // catch 404 and forward to error handler
