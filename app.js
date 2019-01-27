@@ -65,10 +65,6 @@ app.post('/fulfillment', function (req, res) {
             }
             res.send(JSON.stringify(responseObj));
           } else {
-            doc.isReserved = 1;
-            doc.name = "You";
-            doc.save();
-
             let responseObj = {
               "fulfillmentText": "Room 201 is open, would you like to reserve it?",
               "fulfillmentMessages": [{"text":{"text": ["Room 201 is open, would you like to reserve it?"]}}]
