@@ -48,7 +48,7 @@ app.use('/', index);
 app.use('/users', users);
 
 app.post('/fulfillment', function (req, res) {
-  console.log(req.url.params);
+  console.log(req.params);
   let responseObj = {
     "fulfillmentText": "yes its working",
     "fulfillmentMessages": [{"text":{"text": ["yes its working"]}}]
