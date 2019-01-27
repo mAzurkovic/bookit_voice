@@ -50,24 +50,38 @@ app.use('/users', users);
 app.post('/fulfillment', function (req, res) {
   console.log(req.body);
 
+  const intentString = req.body.queryResult.intent.displayName;
 
-  if (req.body.queryResult.intent.displayName == "Get Open Rooms") {
-
+  if (intentString == "Get Open Rooms") {
       let responseObj = {
-        "fulfillmentText": "yes its working",
+        "fulfillmentText": "Room",
         "fulfillmentMessages": [{"text":{"text": ["yes its working"]}}]
       }
       res.send(JSON.stringify(responseObj));
+  } else if (intentString == "Reserve Room") {
 
+    Room.findOne({room: 201}, function (err, doc) {
+      if (err) {
+          console.log(err)
+      } else {
+          doc.isReserved = 1;
+          doc.name = "You";
+          doc.save();
+
+          let responseObj = {
+            "fulfillmentText": "Great, your room is saved!",
+            "fulfillmentMessages": [{"text":{"text": ["Great, your room is saved!"]}}]
+          }
+          res.send(JSON.stringify(responseObj));
+
+      }
+  })
   } else {
-
-
       let responseObj = {
         "fulfillmentText": "no its working",
         "fulfillmentMessages": [{"text":{"text": ["no its working"]}}]
       }
       res.send(JSON.stringify(responseObj));
-
   }
 
 })
