@@ -47,7 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
-app.get('/fulfillment', function (req, res) {
+app.post('/fulfillment', function (req, res) {
   console.log(req.body);
 
   const intentString = req.body.queryResult.intent.displayName;
