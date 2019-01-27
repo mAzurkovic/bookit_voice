@@ -28,11 +28,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
-app.get('/fulfillment', function (req, res) {
+app.post('/fulfillment', function (req, res) {
   res.send(JSON.stringify({
                         "speech" : "Error. Can you try it again ? ",
                         "displayText" : "Error. Can you try it again ? "
-                    }));
+  }));
 })
 
 // catch 404 and forward to error handler
