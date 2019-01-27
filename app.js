@@ -50,11 +50,26 @@ app.use('/users', users);
 app.post('/fulfillment', function (req, res) {
   console.log(req.body);
 
-  let responseObj = {
-    "fulfillmentText": "yes its working",
-    "fulfillmentMessages": [{"text":{"text": ["yes its working"]}}]
+
+  if (req.body.intent.displayName == "Get Open Rooms") {
+
+      let responseObj = {
+        "fulfillmentText": "yes its working",
+        "fulfillmentMessages": [{"text":{"text": ["yes its working"]}}]
+      }
+      res.send(JSON.stringify(responseObj));
+
+  } else {
+
+
+      let responseObj = {
+        "fulfillmentText": "no its working",
+        "fulfillmentMessages": [{"text":{"text": ["no its working"]}}]
+      }
+      res.send(JSON.stringify(responseObj));
+
   }
-  res.send(JSON.stringify(responseObj));
+
 })
 
 // catch 404 and forward to error handler
