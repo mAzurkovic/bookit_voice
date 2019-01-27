@@ -88,7 +88,7 @@ app.post('/fulfillment', function (req, res) {
             res.send(JSON.stringify(responseObj));
           } else {
             var date = new Date();
-            var hours = Number(dateFormat(date, "H")) + 1;
+            var hours = Number(dateFormat(date, "H")) + 1 - 9;
             var minutes = dateFormat(date, "MM");
             var formattedTimeOut = (hours + ":" + minutes + ":" + "00").toString();
             doc.timeDone = formattedTimeOut;
@@ -97,7 +97,7 @@ app.post('/fulfillment', function (req, res) {
             doc.save();
 
             let responseObj = {
-              "fulfillmentText": "Great, your room is saved! You have it until" + formattedTimeOut,
+              "fulfillmentText": "Great, your room is saved! You have it until " + formattedTimeOut,
               "fulfillmentMessages": [{"text":{"text": ["Great, your room is saved!"]}}]
             }
             res.send(JSON.stringify(responseObj));
