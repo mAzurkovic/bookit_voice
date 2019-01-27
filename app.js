@@ -60,24 +60,9 @@ app.post('/fulfillment', function (req, res) {
       } else {
           if (doc.isReserved == 1) {
             let responseObj = {
-              "basicCard": {
-                  "title": "Math & prime numbers",
-                  "formattedText": "42 is an even composite number. It\n    is composed of three distinct prime numbers multiplied together. It\n    has a total of eight divisors. 42 is an abundant number, because the\n    sum of its proper divisors 54 is greater than itself. To count from\n    1 to 42 would take you about twenty-one…",
-                  "image": {
-                      "url": "https://example.google.com/42.png",
-                      "accessibilityText": "Image alternate text"
-                  },
-                  "buttons": [
-                      {
-                          "title": "Read more",
-                          "openUrlAction": {
-                              "url": "https://example.google.com/mathandprimes"
-                          }
-                      }
-                  ],
-                  "imageDisplayOptions": "CROPPED"
-              }
-}
+              "fulfillmentText": "Sorry, all rooms are currently booked.",
+              "fulfillmentMessages": [{"text":{"text": ["Sorry, all rooms are currently booked."]}}]
+            }
             res.send(JSON.stringify(responseObj));
           } else {
             let responseObj = {
@@ -96,17 +81,22 @@ app.post('/fulfillment', function (req, res) {
       } else {
           if (doc.isReserved == 1) {
             let responseObj = {
-              "fulfillmentText": "Sorry, room 201 is booked",
-              "fulfillmentMessages": [{"text":{"text": ["Sorry, room 201 is booked"]}}]
+              "fulfillmentText": "Sorry, room 201 is booked.",
+              "fulfillmentMessages": [{"text":{"text": ["Sorry, room 201 is booked."]}}]
             }
             res.send(JSON.stringify(responseObj));
           } else {
+            var date = new Date();
+            var hours = Number(dateFormat(date, "H")) + 1;
+            var minutes = dateFormat(date, "MM");
+            var formattedTimeOut = (hours + ":" + minutes + ":" + "00").toString();
+            doc.timeDone = formattedTimeOut;
             doc.isReserved = 1;
             doc.name = "You";
             doc.save();
 
             let responseObj = {
-              "fulfillmentText": "Great, your room is saved!",
+              "fulfillmentText": "Great, your room is saved! You have it until" + formattedTimeOut,
               "fulfillmentMessages": [{"text":{"text": ["Great, your room is saved!"]}}]
             }
             res.send(JSON.stringify(responseObj));
