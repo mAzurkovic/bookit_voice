@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
-app.get('/test', function (req, res) {
+app.get('/fulfillment', function (req, res) {
   voice.intent("Get Open Rooms", function(conv) {
     conv.ask("its working ");
   })
