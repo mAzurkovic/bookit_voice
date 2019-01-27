@@ -29,10 +29,11 @@ app.use('/', index);
 app.use('/users', users);
 
 app.post('/fulfillment', function (req, res) {
-  res.send(JSON.stringify({
-                        "speech" : "Error. Can you try it again ? ",
-                        "displayText" : "Error. Can you try it again ? "
-  }));
+  let responseObj = {
+    "fulfillmentText": "yes its working",
+    "fulfillmentMessages": [{"text":{"text": ["yes its working"]}}]
+  }
+  res.send(JSON.stringify(responseObj));
 })
 
 // catch 404 and forward to error handler
