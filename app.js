@@ -64,6 +64,8 @@ app.post('/fulfillment', function (req, res) {
             }
             res.send(JSON.stringify(responseObj));
           } else {
+            doc.save();
+
             let responseObj = {
               "fulfillmentText": "Room 201 is open, would you like me to save it",
               "fulfillmentMessages": [{"text":{"text": ["Room 201 is open, would you like me to save it"]}}]
@@ -71,8 +73,6 @@ app.post('/fulfillment', function (req, res) {
             res.send(JSON.stringify(responseObj));
           }
       }
-
-    //
     // let responseObj = {
     //   "fulfillmentText": "room 201 is open",
     //   "fulfillmentMessages": [{"text":{"text": ["Sorry, room 201 is booked"]}}]
