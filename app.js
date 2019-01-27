@@ -47,37 +47,36 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
-app.post('/fulfillment', function (req, res) {
+app.get('/fulfillment', function (req, res) {
   console.log(req.body);
 
   const intentString = req.body.queryResult.intent.displayName;
 
   if (intentString == "Get Open Rooms") {
-    // Room.findOne({room: 201}, function (err, doc) {
-    //   if (err) {
-    //       console.log(err);
-    //   } else {
-    //       if (doc.isReserved == 1) {
-    //         let responseObj = {
-    //           "fulfillmentText": "Sorry, all rooms are booked",
-    //           "fulfillmentMessages": [{"text":{"text": ["Sorry, room 201 is booked"]}}]
-    //         }
-    //         res.send(JSON.stringify(responseObj));
-    //       } else {
-    //         doc.save();
-    //
-    //         let responseObj = {
-    //           "fulfillmentText": "Room 201 is open, would you like me to save it",
-    //           "fulfillmentMessages": [{"text":{"text": ["Room 201 is open, would you like me to save it"]}}]
-    //         }
-    //         res.send(JSON.stringify(responseObj));
-    //       }
+
+    Room.findOne({room: 201}, function (err, doc) {
+      if (err) {
+          console.log(err);
+      } else {
+          if (doc.isReserved == 1) {
+            let responseObj = {
+              "fulfillmentText": "Sorry, all rooms are booked",
+              "fulfillmentMessages": [{"text":{"text": ["Sorry, all rooms are booked"]}}]
+            }
+            res.send(JSON.stringify(responseObj));
+          } else {
+            doc.isReserved = 1;
+            doc.name = "You";
+            doc.save();
+
+            let responseObj = {
+              "fulfillmentText": "Room 201 is open, would you like to reserve it?",
+              "fulfillmentMessages": [{"text":{"text": ["Room 201 is open, would you like to reserve it?"]}}]
+            }
+            res.send(JSON.stringify(responseObj));
+          }
       }
-    let responseObj = {
-      "fulfillmentText": "room 201 is open",
-      "fulfillmentMessages": [{"text":{"text": ["Sorry, room 201 is booked"]}}]
-    }
-    res.send(JSON.stringify(responseObj));
+  })
 
   } else if (intentString == "Reserve Room") {
     Room.findOne({room: 201}, function (err, doc) {
