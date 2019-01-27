@@ -53,27 +53,58 @@ app.post('/fulfillment', function (req, res) {
   const intentString = req.body.queryResult.intent.displayName;
 
   if (intentString == "Get Open Rooms") {
-      let responseObj = {
-        "fulfillmentText": "Room",
-        "fulfillmentMessages": [{"text":{"text": ["yes its working"]}}]
-      }
-      res.send(JSON.stringify(responseObj));
-  } else if (intentString == "Reserve Room") {
 
     Room.findOne({room: 201}, function (err, doc) {
       if (err) {
-          console.log(err)
+          console.log(err);
       } else {
+        if (doc.isReserved == 1) {
+          let responseObj = {
+            "fulfillmentText": "All rooms are booked",
+            "fulfillmentMessages": [{"text":{"text": ["Sorry, room 201 is booked"]}}]
+          }
+          res.send(JSON.stringify(responseObj));
+        } else {
           doc.isReserved = 1;
           doc.name = "You";
           doc.save();
 
           let responseObj = {
-            "fulfillmentText": "Great, your room is saved!",
+            "fulfillmentText": "Room 201 is open, would you like me to reserve it?",
             "fulfillmentMessages": [{"text":{"text": ["Great, your room is saved!"]}}]
           }
           res.send(JSON.stringify(responseObj));
+      }
+    })
 
+      let responseObj = {
+        "fulfillmentText": "Room 201 is open",
+        "fulfillmentMessages": [{"text":{"text": ["yes its working"]}}]
+      }
+      res.send(JSON.stringify(responseObj));
+
+  } else if (intentString == "Reserve Room") {
+    Room.findOne({room: 201}, function (err, doc) {
+      if (err) {
+          console.log(err);
+      } else {
+          if (doc.isReserved == 1) {
+            let responseObj = {
+              "fulfillmentText": "Sorry, room 201 is booked",
+              "fulfillmentMessages": [{"text":{"text": ["Sorry, room 201 is booked"]}}]
+            }
+            res.send(JSON.stringify(responseObj));
+          } else {
+            doc.isReserved = 1;
+            doc.name = "You";
+            doc.save();
+
+            let responseObj = {
+              "fulfillmentText": "Great, your room is saved!",
+              "fulfillmentMessages": [{"text":{"text": ["Great, your room is saved!"]}}]
+            }
+            res.send(JSON.stringify(responseObj));
+          }
       }
   })
   } else {
