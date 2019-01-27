@@ -51,7 +51,7 @@ app.post('/fulfillment', function (req, res) {
   console.log(req.body);
 
 
-  if (req.body.intent.displayName == "Get Open Rooms") {
+  if (req.body.queryResult.intent.displayName == "Get Open Rooms") {
 
       let responseObj = {
         "fulfillmentText": "yes its working",
