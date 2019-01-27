@@ -5,11 +5,30 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const {dialogflow} = require('actions-on-google')
+const mongoose = require('mongoose');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 
+var Schema = mongoose.Schema;
 
+var app = express();
+
+var RoomSchema = new Schema({
+    name: {type: String},
+    isReserved: {type: Number},
+    room: {type: Number}
+});
+
+var Room = mongoose.model('Room', RoomSchema);
+
+
+mongoose.connect('mongodb://admin:admin1234@ds113815.mlab.com:13815/bookit', {useNewUrlParser: true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("we are connected");
+});
 
 var app = express();
 var voice = dialogflow();
@@ -29,6 +48,7 @@ app.use('/', index);
 app.use('/users', users);
 
 app.post('/fulfillment', function (req, res) {
+  console.log(req.url.params);
   let responseObj = {
     "fulfillmentText": "yes its working",
     "fulfillmentMessages": [{"text":{"text": ["yes its working"]}}]
